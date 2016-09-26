@@ -12,7 +12,7 @@ before_install:
   - npm list -g
 install:
   - npm install phantomjs-prebuilt
-  - npm install --verbose
+  - npm install --loglevel info
   - php src/lib/pre-install.php --non-interactive
 script:
   - npm test
