@@ -10,6 +10,20 @@ class StationTelemetryFactory {
     $this->pdo = $pdo;
   }
 
+  /**
+   * Get telemetry data.
+   *
+   * Returns all stations if no params are specified,
+   * otherwise only matching networks and stations are returned.
+   *
+   * @param network {String}
+   *      The network code
+   * @param station {String}
+   *      The station code
+   *
+   * @return {Array}
+   *      An array of telemetry data
+   */
   public function getTelemetrys($network = null, $station = null) {
     $statement = $this->pdo->prepare(
       'SELECT * ' .
