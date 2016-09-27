@@ -7,6 +7,9 @@ class StationTelemetryFactory {
   public $pdo;
 
   public function __construct($pdo=null) {
+    if (!$pdo) {
+      throw new Exception('PDO connection is not configured');
+    }
     $this->pdo = $pdo;
   }
 
