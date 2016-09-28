@@ -11,13 +11,7 @@ $PROMPTS = array(
 
   'MOUNT_PATH' => array(
     'prompt' => 'URL Path for application',
-    'default' => '/earthquake/netops',
-    'secure' => false
-  ),
-
-  'PORT' => array(
-    'prompt' => 'Port where server should bind',
-    'default' => 8880,
+    'default' => '/monitoring/operations',
     'secure' => false
   ),
 
