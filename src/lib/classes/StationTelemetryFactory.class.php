@@ -22,6 +22,9 @@ class StationTelemetryFactory {
       'WHERE (network_code = :network OR :network is null) '.
       'AND (station_code = :station OR :station is null)'
     );
+
+    // set fetch mode
+    $this->telemetryQuery->setFetchMode(PDO::FETCH_ASSOC);
   }
 
   /**
