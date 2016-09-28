@@ -12,7 +12,7 @@ var watch = {
       'gruntconfig/**/*.js'
     ],
     tasks: [
-      'jshint:gruntfile'
+      'eslint:gruntfile'
     ]
   },
 
@@ -28,7 +28,7 @@ var watch = {
   scripts: {
     files: [config.src + '/htdocs/**/*.js'],
     tasks: [
-      'jshint:scripts',
+      'eslint:scripts',
       'browserify',
       'mocha_phantomjs'
     ]
@@ -59,7 +59,7 @@ var watch = {
       config.test + '/**/*.js'
     ],
     tasks: [
-      'jshint:tests',
+      'eslint:tests',
       'copy:test',
       'browserify:test',
       'mocha_phantomjs'

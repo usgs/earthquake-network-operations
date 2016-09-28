@@ -1,12 +1,11 @@
 'use strict';
 
-
 var config = require('./config');
 
 
-var jshint = {
+var eslint = {
   options: {
-    jshintrc: '.jshintrc'
+    config: '.eslintrc.json'
   },
   gruntfile: [
     'Gruntfile.js',
@@ -21,4 +20,4 @@ var jshint = {
 };
 
 
-module.exports = jshint;
+module.exports = eslint;

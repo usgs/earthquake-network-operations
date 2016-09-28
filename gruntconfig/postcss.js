@@ -30,15 +30,18 @@ var postcss = {
     ext: '.css',
     extDot: 'last',
     src: [
-      '**/*.scss',
-      '!**/_*.scss'
+      'css/*.scss',
+      '!css/_*.scss'
     ]
   },
 
   dist: {
     options: {
       processors: [
-        cssnano({zindex: false})
+        cssnano({
+          autoprefixer: false,
+          zindex: false
+        })
       ]
     },
     cwd: config.build + '/' + config.src + '/htdocs',
