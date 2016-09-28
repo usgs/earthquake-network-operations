@@ -46,12 +46,12 @@ class StationTelemetryFactory {
     $this->telemetryQuery->bindValue(':network', $network, PDO::PARAM_STR);
     $this->telemetryQuery->bindValue(':station', $station, PDO::PARAM_STR);
 
-    if ($this->telemetryQuery->execute() === FALSE) {
-      // something went wrong
-      $errorInfo = $this->telemetryQuery->errorInfo();
-      throw new Exception($errorInfo[2]);
-    } else {
-      $telemetrys = $this->telemetryQuery->fetchAll(PDO::FETCH_ASSOC);
+    try {
+      $this->telemetryQuery->execute();
+      $telemetrys = $this->telemetryQuery->fetchAll();
+    } catch (Exception $e) {
+      print $this->telemetryQuery->errorInfo();
+    } finally {
       $this->telemetryQuery->closeCursor();
     }
 
