@@ -7,7 +7,7 @@ class NetworkOperationsWebService {
   // the factory to use
   public $factory;
 
-  public function __construct($factory = null) {
+  public function __construct ($factory = null) {
     if (!$factory) {
       throw new Exception('No Factory provided');
     }
@@ -27,10 +27,15 @@ class NetworkOperationsWebService {
     $query = $this->parseQuery($params);
     // TODO, update getTelemetrys to accept a query object
     $results = $this->factory->getTelemetrys($query->network, $query->station);
+    $output = array();
+
+    for($i = 0; $i < count($results); $i++) {
+      array_push($output, $this->format_station_geojson($results[$i]));
+    }
 
     // print results
     header('Content-type: application/json');
-    echo $this->safe_json_encode($results);
+    echo $this->safe_json_encode($output);
   }
 
   /**
@@ -41,7 +46,7 @@ class NetworkOperationsWebService {
    *
    * @return [type]
    */
-  public function parseQuery($params = null) {
+  public function parseQuery ($params = null) {
     $query = new NetworkOperationsQuery();
 
     // parse parameters
@@ -71,7 +76,7 @@ class NetworkOperationsWebService {
    *         json encoded value.
    * @throws Exception when unable to json encode.
    */
-  public function safe_json_encode($value){
+  public function safe_json_encode ($value){
     $encoded = json_encode($value);
     $lastError = json_last_error();
     switch ($lastError) {
@@ -84,5 +89,46 @@ class NetworkOperationsWebService {
     }
   }
 
+  /**
+   * Formats each StationTelemetryFactory result into a geojson like object
+   *
+   * @param result {Array}
+   *        A station row from StationTelemetryFactory->getTelemetrys()
+   * @return {Array}
+   *        A geojson like object with station data
+   */
+  public function format_station_geojson ($result) {
+    if (!value) {
+      return;
+    }
+
+    $response = array(
+      'type' => 'Feature',
+      'id' => $result['network_code'] . "_" . $result['station_code'],
+      'geometry' => array(
+        'type' => 'Point',
+        'coordinates' => array(
+          $result['latitude'],
+          $result['longitude'],
+          $result['elevation']
+        )
+      ),
+      'properties' => array(
+        'accelerometer' => $result['accelerometer'],
+        'broadband' => $result['broadband'],
+        'datalogger' => $result['datalogger'],
+        'host' => $result['host'],
+        'name' => $result['name'],
+        'network_code' => $result['network_code'],
+        'station_code' => $result['station_code'],
+        'virtual_networks' => array(
+          'ANSS',
+          'GSN'
+        )
+      )
+    );
+
+    return $response;
+  }
 
 }
