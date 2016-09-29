@@ -98,33 +98,16 @@ class NetworkOperationsWebService {
    *        A geojson like object with station data
    */
   public function format_station_geojson ($result) {
-    if (!value) {
+    if (!$result) {
       return;
     }
 
     $response = array(
       'type' => 'Feature',
       'id' => $result['network_code'] . "_" . $result['station_code'],
-      'geometry' => array(
-        'type' => 'Point',
-        'coordinates' => array(
-          $result['latitude'],
-          $result['longitude'],
-          $result['elevation']
-        )
-      ),
+      'geometry' => null,
       'properties' => array(
-        'accelerometer' => $result['accelerometer'],
-        'broadband' => $result['broadband'],
-        'datalogger' => $result['datalogger'],
-        'host' => $result['host'],
-        'name' => $result['name'],
-        'network_code' => $result['network_code'],
-        'station_code' => $result['station_code'],
-        'virtual_networks' => array(
-          'ANSS',
-          'GSN'
-        )
+        'telemetry' => $result['telemetry']
       )
     );
 
