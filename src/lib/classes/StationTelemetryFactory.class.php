@@ -14,17 +14,7 @@ class StationTelemetryFactory {
 
     // set pdo connection
     $this->pdo = $pdo;
-
-    // prepare statements
-    $this->telemetryQuery = $this->pdo->prepare(
-      'SELECT * ' .
-      'FROM netops_station ' .
-      'WHERE (network_code = :network OR :network is null) '.
-      'AND (station_code = :station OR :station is null)'
-    );
-
-    // set fetch mode
-    $this->telemetryQuery->setFetchMode(PDO::FETCH_ASSOC);
+    $this->telemetryQuery = null;
   }
 
   /**
@@ -42,6 +32,18 @@ class StationTelemetryFactory {
    *      An array of telemetry data
    */
   public function getTelemetrys($network = null, $station = null) {
+    if ($this->telemetryQuery == null) {
+      // prepare statements
+      $this->telemetryQuery = $this->pdo->prepare(
+        'SELECT * ' .
+        'FROM netops_station ' .
+        'WHERE (network_code = :network OR :network is null) '.
+        'AND (station_code = :station OR :station is null)'
+      );
+      // set fetch mode
+      $this->telemetryQuery->setFetchMode(PDO::FETCH_ASSOC);
+    }
+
     // bind values
     $this->telemetryQuery->bindValue(':network', $network, PDO::PARAM_STR);
     $this->telemetryQuery->bindValue(':station', $station, PDO::PARAM_STR);
