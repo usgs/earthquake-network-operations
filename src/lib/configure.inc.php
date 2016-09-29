@@ -11,12 +11,28 @@ $PROMPTS = array(
 
   'MOUNT_PATH' => array(
     'prompt' => 'URL Path for application',
-    'default' => '/mount/path',
+    'default' => '/monitoring/operations',
     'secure' => false
+  ),
+
+  'DB_DSN' => array(
+    'prompt' => 'Database connection string',
+    'default' => '',
+    'secure' => false
+  ),
+
+  'DB_USER' => array(
+    'prompt' => 'Read only database username',
+    'default' => null,
+    'secure' => false
+  ),
+
+  'DB_PASS' => array(
+    'prompt' => 'Read only database password',
+    'default' => null,
+    'secure' => true
   )
-
 );
-
 
 if (!function_exists('configure')) {
   function configure ($prompt, $default = null, $secure = false) {
@@ -91,7 +107,6 @@ foreach ($PROMPTS as $key => $item) {
       configure($item['prompt'], $default, isset($item['secure']) ? $item['secure'] : false) .
       "\"\n");
 }
-
 
 // Do any custom prompting here
 
