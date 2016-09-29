@@ -25,7 +25,6 @@ class NetworkOperationsWebService {
    */
   public function run ($params = null) {
     $query = $this->parseQuery($params);
-    // TODO, update getTelemetrys to accept a query object
     $results = $this->factory->getTelemetrys($query->network, $query->station);
     $output = array();
 
@@ -33,9 +32,14 @@ class NetworkOperationsWebService {
       array_push($output, $this->format_station_geojson($results[$i]));
     }
 
+    $json = array(
+      'type' => 'FeatureCollection',
+      'features' => $output
+    );
+
     // print results
     header('Content-type: application/json');
-    echo $this->safe_json_encode($output);
+    echo $this->safe_json_encode($json);
   }
 
   /**
