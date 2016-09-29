@@ -51,8 +51,6 @@ class StationTelemetryFactory {
     try {
       $this->telemetryQuery->execute();
       $telemetrys = $this->telemetryQuery->fetchAll();
-    } catch (Exception $e) {
-      print $this->telemetryQuery->errorInfo();
     } finally {
       $this->telemetryQuery->closeCursor();
     }
