@@ -26,10 +26,10 @@ if (!isset($TEMPLATE)) {
 <p>Use the following query string parameters to test the webservice</p>
 <dl>
   <dt>network <em>(optional)</em></dt>
-  <dd>two character network code</dd>
+  <dd>FDSN network code</dd>
   <dd><i>example: "US"</i></dd>
   <dt>station <em>(optional)</em></dt>
-  <dd>four character station code</dd>
+  <dd>FDSN station code</dd>
   <dd><i>example: "PKME"</i></dd>
 </dl>
 
