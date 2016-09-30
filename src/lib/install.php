@@ -6,6 +6,8 @@
 //
 // Note: If the user declines any step along the way this script is complete.
 
+include_once 'classes/DatabaseInstaller.class.php';
+
 $directory = getcwd() . '/sql/';
 
 // Remove the database
@@ -21,7 +23,9 @@ if (!responseIsAffirmative($answer)) {
 $username = configure('DB_ROOT_USER', 'root', "\nDatabase adminitrator user");
 $password = configure('DB_ROOT_PASS', '', "Database administrator password",
     true);
-$installer = DatabaseInstaller::getInstaller($CONFIG['DB_DSN'], $username, $password);
+
+// instantiate installer
+$installer = DatabaseInstaller($CONFIG['DB_DSN'], $username, $password);
 
 // Add table/ load data
 $installer->runScript($directory . 'install.sql');

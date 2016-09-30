@@ -2,6 +2,7 @@
 
 // read in DSN
 include_once 'conf/config.inc.php';
+include_once 'classes/DatabaseInstaller.class.php';
 
 $directory = getcwd() . '/sql/';
 
@@ -27,7 +28,9 @@ if (!responseIsAffirmative($answer)) {
 $username = configure('DB_ROOT_USER', 'root', "\nDatabase adminitrator user");
 $password = configure('DB_ROOT_PASS', '', "Database administrator password",
     true);
-$installer = DatabaseInstaller::getInstaller($CONFIG['DB_DSN'], $username, $password);
+
+// instantiate installer
+$installer = DatabaseInstaller($CONFIG['DB_DSN'], $username, $password);
 
 // Drop table
 $installer->runScript($directory . 'uninstall.sql');
