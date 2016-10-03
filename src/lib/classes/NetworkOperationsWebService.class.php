@@ -111,7 +111,7 @@ class NetworkOperationsWebService {
       'id' => $result['network_code'] . "_" . $result['station_code'],
       'geometry' => null,
       'properties' => array(
-        'telemetry' => $result['telemetry']
+        'telemetry' => (float)$result['telemetry']
       )
     );
 
