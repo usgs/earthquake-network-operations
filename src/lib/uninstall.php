@@ -1,17 +1,16 @@
 <?php
-// This script prompts user if they would like to set up the latency schema
-//
-// (1) Create the schema
-// (2) Load reference data into the database.
-//
-// Note: If the user declines any step along the way this script is complete.
 
+// read in DSN
+include_once '../conf/config.inc.php';
+include_once './install-funcs.inc.php';
 include_once 'classes/DatabaseInstaller.class.php';
+
+define('NON_INTERACTIVE', false);
 
 $directory = getcwd() . '/sql/';
 
-// Load data into database
-$answer = promptYesNo("Would you like to load the data for this application",
+// Remove the data
+$answer = promptYesNo("Would you like to remove the data for this application",
     true);
 
 if (!$answer) {
@@ -27,9 +26,9 @@ $password = configure('DB_ROOT_PASS', '', "Database administrator password",
 // instantiate installer
 $installer = new DatabaseInstaller($CONFIG['DB_DSN'], $username, $password);
 
-// Add table/ load data
-$installer->runScript($directory . 'install.sql');
+// Drop table
+$installer->runScript($directory . 'uninstall.sql');
 
-print "Data loaded.\n";
+print "Data removed.\n";
 
 ?>

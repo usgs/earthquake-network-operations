@@ -14,15 +14,13 @@ CREATE TABLE `netops_station` (
   PRIMARY KEY  (`id`),
 
   UNIQUE KEY `netops_station_is_unique` (`network_code`,`station_code`)
-)
+);
 
 
 --
 -- Load Data
 --
 
-LOCK TABLES `netops_station` WRITE;
-/*!40000 ALTER TABLE `netops_station` DISABLE KEYS */;
 INSERT INTO `netops_station` VALUES
 (432,'2016-08-19 13:12:42','AT','PMR',NULL),
 (431,'2016-09-26 16:33:42','AK','TNA',NULL),

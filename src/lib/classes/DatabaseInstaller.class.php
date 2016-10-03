@@ -3,7 +3,7 @@
 /**
  * Base class for database installer.
  */
-abstract class DatabaseInstaller {
+class DatabaseInstaller {
 
   // PDO handle
   protected $dbh = null;
@@ -14,7 +14,6 @@ abstract class DatabaseInstaller {
   // PDO password
   protected $pass;
 
-  /**
 
   /**
    * Constructor, called by subclasses.
@@ -26,7 +25,7 @@ abstract class DatabaseInstaller {
    * @param $pass {String}
    *        DB password.
    */
-  protected function __construct($url, $user, $pass) {
+  public function __construct($url, $user, $pass) {
     $this->url = $url;
     $this->user = $user;
     $this->pass = $pass;
