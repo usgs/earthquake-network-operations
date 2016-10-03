@@ -2,58 +2,46 @@
   /**
    * Prompts user for a configuration $option and returns the resulting input.
    *
-   * @param $option {String}
-   *      The name of the option to configure.
-   * @param $default {String} Optional, default: <none>
-   *      The default value to use if no answer is given.
-   * @param $comment {String} Optional, default: $option
+   * @param $prompt {String} Optional, default: $option
    *      Help text used when prompting the user. Also used as a comment in
    *      the configuration file.
+   * @param $default {String} Optional, default: <none>
+   *      The default value to use if no answer is given.
    * @param $secure {Boolean} Optional, default: false
    *      True if user input should not be echo'd back to the screen as it
    *      is entered. Useful for passwords.
-   * @param $unknown {Boolean} Optional, default: false
-   *      True if the configuration option is not a well-known option and
-   *      a warning should be printed.
    *
    * @return {String}
    *      The configured value for the requested option.
    */
-  function configure ($option, $default=null, $comment='', $secure=false,
-      $unknown=false) {
+  function configure ($prompt, $default = null, $secure = false) {
+
+    echo $prompt;
+    if ($default != null) {
+      echo ' [' . $default . ']';
+    }
+    echo ': ';
 
     if (NON_INTERACTIVE) {
+      // non-interactive
+      echo '(Non-interactive, using default)' . PHP_EOL;
       return $default;
     }
 
-    // check if windows
-    static $isWindows = null;
-    if ($isWindows === null) {
-      $isWindows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+    if ($secure) {
+      system('stty -echo');
+      $answer = trim(fgets(STDIN));
+      system('stty echo');
+      echo "\n";
+    } else {
+      $answer = trim(fgets(STDIN));
     }
 
-    if ($unknown) {
-      // Warn user about an unknown configuration option being used.
-      print "\nThis next option ($option) is an unknown configuration" .
-          " option, which may mean it has been deprecated or removed.\n\n";
+    if ($answer == '') {
+      $answer = $default;
     }
 
-    // Make sure we have good values for I/O.
-    $help = ($comment !== null && $comment !== '') ? $comment : $option;
-
-    // Prompt for and read the configuration option value
-    printf("%s [%s]: ", $help, ($default === null ? '<none>' : $default));
-    if ($secure && !$isWindows) {system('stty -echo');}
-    $value = trim(fgets(STDIN));
-    if ($secure && !$isWindows) {system('stty echo'); print "\n";}
-
-    // Check the input
-    if ($value === '' && $default !== null) {
-      $value = $default;
-    }
-
-    // Always return the value
-    return $value;
+    return $answer;
   }
 
 

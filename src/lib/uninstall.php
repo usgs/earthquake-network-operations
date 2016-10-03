@@ -19,9 +19,8 @@ if (!$answer) {
 }
 
 // Setup root DSN
-$username = configure('DB_ROOT_USER', 'root', "\nDatabase adminitrator user");
-$password = configure('DB_ROOT_PASS', '', "Database administrator password",
-    true);
+$username = configure("Database adminitrator user", 'root');
+$password = configure("Database administrator password", '', true);
 
 // instantiate installer
 $installer = new DatabaseInstaller($CONFIG['DB_DSN'], $username, $password);
