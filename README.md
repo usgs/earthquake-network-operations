@@ -63,3 +63,22 @@ From root of project, run:
     ```
     open http://localhost:8000/
     ```
+
+
+## MySQL
+
+### Loading data
+
+This script assumes that you already have a MySQL instance running with a
+database that you can load data into.
+
+- From root of project, run:
+    ```
+    src/lib/pre-install
+    ```
+
+### Removing data
+- From root of project, run:
+    ```
+    src/lib/uninstall
+    ```

@@ -1,5 +1,6 @@
 <?php
 
+include_once 'install-funcs.inc.php';
 
 // This data structure allows for simple configuration prompts
 $PROMPTS = array(
@@ -11,7 +12,7 @@ $PROMPTS = array(
 
   'MOUNT_PATH' => array(
     'prompt' => 'URL Path for application',
-    'default' => '/monitoring/operations',
+    'default' => '',
     'secure' => false
   ),
 
@@ -33,38 +34,6 @@ $PROMPTS = array(
     'secure' => true
   )
 );
-
-if (!function_exists('configure')) {
-  function configure ($prompt, $default = null, $secure = false) {
-
-    echo $prompt;
-    if ($default != null) {
-      echo ' [' . $default . ']';
-    }
-    echo ': ';
-
-    if (NON_INTERACTIVE) {
-      // non-interactive
-      echo '(Non-interactive, using default)' . PHP_EOL;
-      return $default;
-    }
-
-    if ($secure) {
-      system('stty -echo');
-      $answer = trim(fgets(STDIN));
-      system('stty echo');
-      echo "\n";
-    } else {
-      $answer = trim(fgets(STDIN));
-    }
-
-    if ($answer == '') {
-      $answer = $default;
-    }
-
-    return $answer;
-  }
-}
 
 // This script should only be included by the pre-install.php script. The
 // calling script is responsible for defining the $CONFIG_FILE_INI and calling
