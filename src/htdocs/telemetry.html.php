@@ -1,6 +1,7 @@
 <?php
 if (!isset($TEMPLATE)) {
-  $TITLE = 'Telemetry Webservice Documentation';
+  $TITLE = 'Telemetry Documentation';
+  $NAVIGATION = true;
 
   include_once 'template.inc.php';
 }
