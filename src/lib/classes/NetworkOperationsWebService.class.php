@@ -101,7 +101,7 @@ class NetworkOperationsWebService {
         $query->station = $value;
       } else {
         // throw exception for bad request
-        $ex = new Exception('Bad Request: Unknown parameter "' . $name . '"');
+        $ex = new Exception('Unknown parameter: ' . $name);
         $ex->httpStatus = 400;
         throw $ex;
       }
@@ -125,13 +125,16 @@ class NetworkOperationsWebService {
   public function safe_json_encode ($value){
     $encoded = json_encode($value);
     $lastError = json_last_error();
+
     switch ($lastError) {
       case JSON_ERROR_NONE:
         return $encoded;
       case JSON_ERROR_UTF8:
         return safe_json_encode(utf8_encode_array($value));
       default:
-        throw new Exception('json_encode error (' . $lastError . ')');
+        $ex = new Exception('An error occurred encoding the result');
+        $ex->httpStatus = 500;
+        throw $ex;
     }
   }
 
@@ -153,7 +156,10 @@ class NetworkOperationsWebService {
       'id' => $result['network_code'] . "_" . $result['station_code'],
       'geometry' => null,
       'properties' => array(
-        'telemetry' => (float)$result['telemetry']
+        'network_code' => $result['network_code'],
+        'station_code' => $result['station_code'],
+        'telemetry' => (integer) $result['telemetry'],
+        'updated' => date('c', (integer) $result['updated'])
       )
     );
 
