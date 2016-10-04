@@ -75,9 +75,8 @@ if (!isset($TEMPLATE)) {
 
 <h3>Request</h3>
 <pre><code><a class="example-request"
-    href="./telemetry.json?network=AK&amp;station=BMR"><?php
-  print $CONFIG['MOUNT_PATH'];
-?>/telemetry.json?network=AK&amp;station=BMR</a></code></pre>
+    href="./telemetry.json?network=AK&amp;station=BMR"
+  >telemetry.json?network=AK&amp;station=BMR</a></code></pre>
 
 <h3>Response</h3>
 <pre><code>{
