@@ -16,6 +16,9 @@ class NetworkOperationsWebService {
       '500' => 'HTTP/1.0 500 Internal Server Error'
     );
 
+  protected static $CACHE_MAXAGE = 300; // seconds
+  protected static $DATE_FORMAT = 'D, d M Y H:i:s \G\M\T';
+
   public function __construct ($factory = null) {
     if (!$factory) {
       throw new Exception('No Factory provided');
@@ -52,6 +55,13 @@ class NetworkOperationsWebService {
         ),
         'features' => $output
       );
+
+      // caching headers
+      $now = time();
+      header('Cache-Control: public, max-age=' . self::$CACHE_MAXAGE);
+      header('Expires: ' .
+          gmdate(self::$DATE_FORMAT, $now + self::$CACHE_MAXAGE));
+      header('Last-Modified: ' . gmdate(self::$DATE_FORMAT, $now));
 
       // print results
       echo $this->safe_json_encode($json);
