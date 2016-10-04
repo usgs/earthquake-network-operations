@@ -103,7 +103,7 @@ class NetworkOperationsWebService {
    */
   public function format_station_geojson ($result) {
     if (!$result) {
-      return;
+      return null;
     }
 
     $response = array(
