@@ -52,6 +52,12 @@ file_put_contents($HTTPD_CONF, '
 
   Alias ' . $CONFIG['MOUNT_PATH'] . ' ' . $HTDOCS_DIR . '
 
+  RewriteEngine on
+  RewriteRule ^' . $CONFIG['MOUNT_PATH'] . '/telemetry.json ' .
+      $CONFIG['MOUNT_PATH'] . '/telemetry.json.php [L,QSA,PT]
+  RewriteRule ^' . $CONFIG['MOUNT_PATH'] . '/telemetry.html ' .
+      $CONFIG['MOUNT_PATH'] . '/telemetry.html.php [L,PT]
+
   <Location ' . $CONFIG['MOUNT_PATH'] . '>
     Order allow,deny
     Allow from all
