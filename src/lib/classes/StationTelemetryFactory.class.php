@@ -34,12 +34,21 @@ class StationTelemetryFactory {
   public function getTelemetrys($network = null, $station = null) {
     if ($this->telemetryQuery == null) {
       // prepare statements
-      $this->telemetryQuery = $this->pdo->prepare(
-        'SELECT * ' .
-        'FROM netops_station ' .
-        'WHERE (network_code = :network OR :network is null) '.
-        'AND (station_code = :station OR :station is null)'
-      );
+      $this->telemetryQuery = $this->pdo->prepare('
+        SELECT
+          id,
+          unix_timestamp(updated) AS updated,
+          network_code,
+          station_code,
+          telemetry
+        FROM
+          netops_station
+        WHERE
+          (network_code = :network OR :network is null)
+          AND
+          (station_code = :station OR :station is null)
+      ');
+
       // set fetch mode
       $this->telemetryQuery->setFetchMode(PDO::FETCH_ASSOC);
     }
@@ -51,6 +60,12 @@ class StationTelemetryFactory {
     try {
       $this->telemetryQuery->execute();
       $telemetrys = $this->telemetryQuery->fetchAll();
+    } catch (Exception $ex) {
+      // Don't throw the raw exception, instead, throw a handled one
+      // so we get better output to the user
+      $handled = new Exception('A database error occurred');
+      $handled->httpStatus = 500;
+      throw $handled;
     } finally {
       $this->telemetryQuery->closeCursor();
     }
