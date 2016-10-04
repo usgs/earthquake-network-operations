@@ -12,7 +12,7 @@ $PROMPTS = array(
 
   'MOUNT_PATH' => array(
     'prompt' => 'URL Path for application',
-    'default' => '',
+    'default' => '/ws/network-operations',
     'secure' => false
   ),
 
