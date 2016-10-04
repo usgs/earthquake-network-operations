@@ -14,7 +14,8 @@ if (!isset($TEMPLATE)) {
 include_once '../src/conf/config.inc.php';
 include_once '../src/lib/classes/StationTelemetryFactory.class.php';
 
-$stf = new StationTelemetryFactory($DB);
+$stf = new StationTelemetryFactory($CONFIG['DB_DSN'],
+    $CONFIG['DB_USER'], $CONFIG['DB_PASS']);
 
 print '<pre>';
 print_r($stf->getTelemetrys());
