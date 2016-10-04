@@ -85,7 +85,7 @@ class NetworkOperationsWebService {
         'type' => 'FeatureCollection',
         'metadata' => array(
           'status' => 'error',
-          'error' => $message
+          'error' => htmlentities($message)
         ),
         'features' => null
       ));
