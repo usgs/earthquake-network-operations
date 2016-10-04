@@ -17,19 +17,19 @@ $PROMPTS = array(
   ),
 
   'DB_DSN' => array(
-    'prompt' => 'Database connection string',
-    'default' => '',
+    'prompt' => 'Database read-only connection string',
+    'default' => 'DRIVER:host=HOST;port=PORT;dbname=DBNAME',
     'secure' => false
   ),
 
   'DB_USER' => array(
-    'prompt' => 'Read only database username',
+    'prompt' => 'Read-only database username',
     'default' => null,
     'secure' => false
   ),
 
   'DB_PASS' => array(
-    'prompt' => 'Read only database password',
+    'prompt' => 'Read-only database password',
     'default' => null,
     'secure' => true
   )

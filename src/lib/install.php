@@ -22,8 +22,8 @@ if (!$answer) {
 // Setup root DSN
 $username = configure('Database adminitrator user', 'root');
 $password = configure('Database administrator password', '', true);
-$dsn = configure('Database administrator DSN',
-    'driver:host=HOST;port=PORT;dbname=DBNAME');
+$dsn = configure('Database administrator DSN', isset($CONFIG['DB_DSN']) ?
+    $CONFIG['DB_DSN'] : 'driver:host=HOST;port=PORT;dbname=DBNAME');
 
 // instantiate installer
 $installer = new DatabaseInstaller($dsn, $username, $password);
