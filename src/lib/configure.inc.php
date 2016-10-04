@@ -32,6 +32,18 @@ $PROMPTS = array(
     'prompt' => 'Read-only database password',
     'default' => null,
     'secure' => true
+  ),
+
+  'DB_WRITE_USER' => array(
+    'prompt' => 'Write database username',
+    'default' => null,
+    'secure' => false
+  ),
+
+  'DB_WRITE_PASS' => array(
+    'prompt' => 'Write database password',
+    'default' => null,
+    'secure' => true
   )
 );
 
