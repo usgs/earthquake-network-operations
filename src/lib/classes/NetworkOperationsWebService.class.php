@@ -7,6 +7,15 @@ class NetworkOperationsWebService {
   // the factory to use
   public $factory;
 
+  // Maybe not complete, but good enough for now
+  protected static $HTTP_CODES = array(
+      '200' => 'HTTP/1.0 200 OK',
+      '400' => 'HTTP/1.0 400 Bad Request',
+      '403' => 'HTTP/1.0 403 Not Authorized',
+      '404' => 'HTTP/1.0 404 Not Found',
+      '500' => 'HTTP/1.0 500 Internal Server Error'
+    );
+
   public function __construct ($factory = null) {
     if (!$factory) {
       throw new Exception('No Factory provided');
@@ -24,22 +33,53 @@ class NetworkOperationsWebService {
    * @return [type]
    */
   public function run ($params = null) {
-    $query = $this->parseQuery($params);
-    $results = $this->factory->getTelemetrys($query->network, $query->station);
-    $output = array();
+    try {
+      header('Content-type: application/json');
 
-    for($i = 0; $i < count($results); $i++) {
-      array_push($output, $this->format_station_geojson($results[$i]));
+      $query = $this->parseQuery($params);
+      $results = $this->factory->getTelemetrys(
+          $query->network, $query->station);
+      $output = array();
+
+      for ($i = 0; $i < count($results); $i++) {
+        array_push($output, $this->format_station_geojson($results[$i]));
+      }
+
+      $json = array(
+        'type' => 'FeatureCollection',
+        'metadata' => array(
+          'status' => 'success'
+        ),
+        'features' => $output
+      );
+
+      // print results
+      echo $this->safe_json_encode($json);
+    } catch (Exception $ex) {
+      if (isset($ex->httpStatus) &&
+          isset(self::$HTTP_CODES[$ex->httpStatus])) {
+
+        header(self::$HTTP_CODES[$ex->httpStatus]);
+        $message = $ex->getMessage();
+      } else {
+        // Unclear what happened, use generic error.
+        header(self::$HTTP_CODES['500']);
+
+        // Not a purposefully thrown error, could be DB connection issues
+        // etc... and do not want to leak connection info in an error string,
+        // so instead, just provide a generic message
+        $message = 'An unexpected error occurred';
+      }
+
+      echo $this->safe_json_encode(array(
+        'type' => 'FeatureCollection',
+        'metadata' => array(
+          'status' => 'error',
+          'error' => $message
+        ),
+        'features' => null
+      ));
     }
-
-    $json = array(
-      'type' => 'FeatureCollection',
-      'features' => $output
-    );
-
-    // print results
-    header('Content-type: application/json');
-    echo $this->safe_json_encode($json);
   }
 
   /**
@@ -61,7 +101,9 @@ class NetworkOperationsWebService {
         $query->station = $value;
       } else {
         // throw exception for bad request
-        throw new Exception('Bad Request: Unknown parameter "' . $name . '".');
+        $ex = new Exception('Bad Request: Unknown parameter "' . $name . '"');
+        $ex->httpStatus = 400;
+        throw $ex;
       }
     }
 
