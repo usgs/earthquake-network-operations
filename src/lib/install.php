@@ -11,8 +11,8 @@ include_once 'classes/DatabaseInstaller.class.php';
 $directory = getcwd() . '/sql/';
 
 // Load data into database
-$answer = promptYesNo("Would you like to load the data for this application",
-    true);
+$answer = promptYesNo('Would you like to load the data for this application',
+    false);
 
 if (!$answer) {
   print "Normal exit.\n";
