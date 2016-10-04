@@ -10,5 +10,3 @@
   $obj = $_GET;
 
   $ws->run($obj);
-
-?>
