@@ -11,8 +11,8 @@ include_once 'classes/DatabaseInstaller.class.php';
 $directory = getcwd() . '/sql/';
 
 // Load data into database
-$answer = promptYesNo("Would you like to load the data for this application",
-    true);
+$answer = promptYesNo('Would you like to load the data for this application',
+    false);
 
 if (!$answer) {
   print "Normal exit.\n";
@@ -20,11 +20,13 @@ if (!$answer) {
 }
 
 // Setup root DSN
-$username = configure("Database adminitrator user", 'root');
-$password = configure("Database administrator password", '', true);
+$username = configure('Database adminitrator user', 'root');
+$password = configure('Database administrator password', '', true);
+$dsn = configure('Database administrator DSN', isset($CONFIG['DB_DSN']) ?
+    $CONFIG['DB_DSN'] : 'driver:host=HOST;port=PORT;dbname=DBNAME');
 
 // instantiate installer
-$installer = new DatabaseInstaller($CONFIG['DB_DSN'], $username, $password);
+$installer = new DatabaseInstaller($dsn, $username, $password);
 
 // Add table/ load data
 $installer->runScript($directory . 'install.sql');
