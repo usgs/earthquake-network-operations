@@ -20,11 +20,13 @@ if (!$answer) {
 }
 
 // Setup root DSN
-$username = configure("Database adminitrator user", 'root');
-$password = configure("Database administrator password", '', true);
+$username = configure('Database adminitrator user', 'root');
+$password = configure('Database administrator password', '', true);
+$dsn = configure('Database administrator DSN',
+    'driver:host=HOST;port=PORT;dbname=DBNAME');
 
 // instantiate installer
-$installer = new DatabaseInstaller($CONFIG['DB_DSN'], $username, $password);
+$installer = new DatabaseInstaller($dsn, $username, $password);
 
 // Add table/ load data
 $installer->runScript($directory . 'install.sql');
