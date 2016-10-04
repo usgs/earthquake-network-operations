@@ -33,4 +33,36 @@ $installer->runScript($directory . 'install.sql');
 
 print "Data loaded.\n";
 
+
+// Create write user for database updates
+$answer = promptYesNo('Would you like to create the write database user',
+    false);
+
+if (!$answer) {
+  print "Normal exit.\n";
+  exit(0);
+}
+
+if (!$CONFIG['DB_WRITE_USER'] || !$CONFIG['DB_WRITE_PASS']) {
+  print "Database write username and password cannot be empty\n";
+  exit(1);
+}
+
+$createUser = $installer->dbh->prepare(
+    "CREATE USER IF NOT EXISTS :username@'%' IDENTIFIED BY :password");
+$createUser->execute(array(
+  ':username' => $CONFIG['DB_WRITE_USER'],
+  ':password' => $CONFIG['DB_WRITE_PASS']
+));
+$createUser = null;
+print "Write user created\n";
+
+$grantUser = $installer->dbh->prepare(
+    "GRANT SELECT,INSERT,UPDATE,DELETE ON netops_station TO :username@'%'");
+$grantUser->execute(array(
+  ':username' => $CONFIG['DB_WRITE_USER']
+));
+$grantUser = null;
+print "Write user granted permissions\n";
+
 ?>

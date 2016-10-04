@@ -6,7 +6,7 @@
 class DatabaseInstaller {
 
   // PDO handle
-  protected $dbh = null;
+  public $dbh = null;
   // PDO url
   protected $url;
   // PDO user
