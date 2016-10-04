@@ -21,9 +21,11 @@ if (!$answer) {
 // Setup root DSN
 $username = configure("Database adminitrator user", 'root');
 $password = configure("Database administrator password", '', true);
+$dsn = configure('Database administrator DSN', isset($CONFIG['DB_DSN']) ?
+    $CONFIG['DB_DSN'] : 'driver:host=HOST;port=PORT;dbname=DBNAME');
 
 // instantiate installer
-$installer = new DatabaseInstaller($CONFIG['DB_DSN'], $username, $password);
+$installer = new DatabaseInstaller($dsn, $username, $password);
 
 // Drop table
 $installer->runScript($directory . 'uninstall.sql');
@@ -32,7 +34,13 @@ print "Data removed.\n";
 
 
 // Remove the write user
-$answer = promptYesNo("Would you like to remove the database write user",
+if (!isset($CONFIG['DB_WRITE_USER']) || !$CONFIG['DB_WRITE_USER']) {
+  print "No database write user configured, skipping remove\n";
+  exit(0);
+}
+
+$answer = promptYesNo("Would you like to remove the database write user " .
+    "(" . $CONFIG['DB_WRITE_USER'] . ")",
     false);
 
 if (!$answer) {

@@ -35,6 +35,12 @@ print "Data loaded.\n";
 
 
 // Create write user for database updates
+if (!isset($CONFIG['DB_WRITE_USER']) || !$CONFIG['DB_WRITE_USER'] ||
+    !isset($CONFIG['DB_WRITE_PASS']) || !$CONFIG['DB_WRITE_PASS']) {
+  print "Database write user or password not configured, skipping create\n";
+  exit(0);
+}
+
 $answer = promptYesNo('Would you like to create the write database user',
     false);
 
@@ -43,26 +49,31 @@ if (!$answer) {
   exit(0);
 }
 
-if (!$CONFIG['DB_WRITE_USER'] || !$CONFIG['DB_WRITE_PASS']) {
-  print "Database write username and password cannot be empty\n";
-  exit(1);
-}
-
 $createUser = $installer->dbh->prepare(
-    "CREATE USER IF NOT EXISTS :username@'%' IDENTIFIED BY :password");
-$createUser->execute(array(
-  ':username' => $CONFIG['DB_WRITE_USER'],
-  ':password' => $CONFIG['DB_WRITE_PASS']
-));
+    "CREATE USER :username@'%' IDENTIFIED BY :password");
+try {
+  $createUser->execute(array(
+    ':username' => $CONFIG['DB_WRITE_USER'],
+    ':password' => $CONFIG['DB_WRITE_PASS']
+  ));
+  print "Write user created\n";
+} catch (Exception $e) {
+  print "Exception creating write user\n";
+  print_r($installer->dbh->errorInfo());
+}
 $createUser = null;
-print "Write user created\n";
 
 $grantUser = $installer->dbh->prepare(
     "GRANT SELECT,INSERT,UPDATE,DELETE ON netops_station TO :username@'%'");
-$grantUser->execute(array(
-  ':username' => $CONFIG['DB_WRITE_USER']
-));
+try {
+  $grantUser->execute(array(
+    ':username' => $CONFIG['DB_WRITE_USER']
+  ));
+  print "Write user granted permissions\n";
+} catch (Exception $e) {
+  print "Exception granting permissions to write user\n";
+  print_r($installer->dbh->errorInfo());
+}
 $grantUser = null;
-print "Write user granted permissions\n";
 
 ?>
