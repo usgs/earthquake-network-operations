@@ -11,7 +11,7 @@ $directory = getcwd() . '/sql/';
 
 // Remove the data
 $answer = promptYesNo("Would you like to remove the data for this application",
-    true);
+    false);
 
 if (!$answer) {
   print "Normal exit.\n";
@@ -29,5 +29,23 @@ $installer = new DatabaseInstaller($CONFIG['DB_DSN'], $username, $password);
 $installer->runScript($directory . 'uninstall.sql');
 
 print "Data removed.\n";
+
+
+// Remove the write user
+$answer = promptYesNo("Would you like to remove the database write user",
+    false);
+
+if (!$answer) {
+  print "Normal exit.\n";
+  exit(0);
+}
+
+$dropUser = $installer->dbh->prepare(
+    "DROP USER :username");
+$dropUser->execute(array(
+  ':username' => $CONFIG['DB_WRITE_USER']
+));
+$dropUser = null;
+print "Write user removed\n";
 
 ?>
