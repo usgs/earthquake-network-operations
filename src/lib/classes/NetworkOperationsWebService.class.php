@@ -124,7 +124,7 @@ class NetworkOperationsWebService {
    * Safely json_encode values.
    *
    * Handles malformed UTF8 characters better than normal json_encode.
-   * from http://stackoverflow.com/questions/10199017/how-to-solve-json-error-utf8-error-in-php-json-decode
+   * from https://stackoverflow.com/questions/10199017/how-to-solve-json-error-utf8-error-in-php-json-decode
    *
    * @param $value {Mixed}
    *        value to encode as json.
