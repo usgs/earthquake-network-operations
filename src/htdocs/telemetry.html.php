@@ -42,7 +42,7 @@ if (!isset($TEMPLATE)) {
 <h2>Output</h2>
 <p>
   Results are formatted as a <a
-    href="http://geojson.org/geojson-spec.html#feature-collection-objects">
+    href="https://geojson.org/geojson-spec.html#feature-collection-objects">
   GeoJSON FeatureCollection</a>. Additionally a metadata property is provided
   to inspect the status of the request. An error message is provided in the
   metadata if one occurred. If an error occurs, the <code>features</code>
