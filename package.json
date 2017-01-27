@@ -1,6 +1,6 @@
 {
   "name": "earthquake-network-operations",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Seismic network operations monitoring pages.",
   "repository": {
     "type": "git",
@@ -36,7 +36,7 @@
     "grunt-mocha-phantomjs": "3.0.0",
     "grunt-postcss": "0.7.0",
     "gruntify-eslint": "3.1.0",
-    "hazdev-template": "1.1.6",
+    "hazdev-template": "1.2.0",
     "hazdev-webutils": "0.1.9",
     "ini": "1.2.1",
     "mocha": "2.1.0",
