@@ -1,8 +1,11 @@
+ > **THIS PROJECT HAS BEEN ARCHIVED**
+ >
+ > Please see https://code.usgs.gov/ghsc/hazdev/earthquake-network-operations
+
 earthquake-network-operations
 =============================
 
 Seismic network operations monitoring pages.
-
 
 ## Getting Started
 - run `npm install` to install application development dependencies
